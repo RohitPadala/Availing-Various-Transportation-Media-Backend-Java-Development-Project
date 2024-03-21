@@ -1,0 +1,327 @@
+import java.io.*;//Importing input/output package.
+class Transport//Naming the class.
+{
+    String name[]=new String[100];
+    String address[]=new String[100];//Creating an array for storing data.
+    char gender[]=new char[100];
+    String occupation[]=new String[100];
+    String destination[]=new String[100];
+    String food[]=new String[100];
+    String eachpass[]=new String[1000];
+    int eachpassage[]=new int[1000];
+    int age[]=new int[100];
+    int passenger[]=new int[100];
+    long mobno[]=new long[100];
+    int i=0;
+    double bill[]=new double[100];
+    double base=0.0,distance=0.0;//Declaring the variables. 
+    int transport[]=new int[100];
+    int service[]=new int[100];
+    String vehicle[]={"Car","Rickshaw","Truck"};
+    String veh,trans="",nul;
+    int time[]= new int[100];
+    Transport(int ix,double basex,double disx)//Creating a parameterised constructor.
+    { 
+        i=ix;
+        base=basex;
+        distance=disx;//Initializing variables through constructors.
+    }
+    public static void main()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);//Activating buffer.
+       Transport ob=new Transport(0,0.0,0.0);//Instantiating the class by creating an object.
+       int ch;
+       do
+       {
+           System.out.println("These are your options:");
+           System.out.println("Enter 1 for accepting customer details and the booking made by the customer.");
+           System.out.println("Enter 2 for calculating and displaying the bill to the customer.");
+           System.out.println("Enter 3 for food packages.");
+           System.out.println("Enter 4 for cancellation of order.");
+           System.out.println("Enter 5 for giving feedback.");
+           System.out.println("Enter 6 for arranging list of fellow passengers according to age.");
+           System.out.println("Enter 7 to exit.");
+           ch=Integer.parseInt(br.readLine());//Accepting user's choice through the input device.
+           switch(ch)
+           {
+               case 1: ob.details();
+                        break;
+               case 2: ob.billing();
+                        break;
+               case 3: ob.food();
+                        break;
+               case 4: ob.cancellation();
+                        break;
+               case 5: ob.feedback();//Calling the corresponding function.
+                        break;
+               case 6: ob.sorting();
+                        break;
+               case 7: System.out.println("Thanks for choosing our company. Hope we see you again!");
+                        break;
+               default: System.out.println("Invalid choice");
+           }
+       }while(ch!=6);//Using a do while loop so that the program executes at least once.
+    }
+    public void details()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       System.out.println("Enter the customer's name, please:");
+       name[i]=br.readLine();
+       System.out.println("Enter the customer's age, please:");
+       age[i]=Integer.parseInt(br.readLine());
+       System.out.println("Enter the customer's address, please:");
+       address[i]=br.readLine();
+       System.out.println("Enter the customer's gender(enter either M or F), please:");
+       gender[i]=(char)br.read();
+       System.out.println("Further Details:");
+       nul=br.readLine();
+       System.out.println("Enter the customer's Occupation, please:");
+       occupation[i]=br.readLine();
+       System.out.println("Enter the customer's mobile number, please:");
+       mobno[i]=Long.parseLong(br.readLine());
+       System.out.println("Enter the number of passengers, please:");
+       passenger[i]=Integer.parseInt(br.readLine());//Accepting user data.
+       System.out.println("Please enter the preferred mode of transport: 1 for air, 2 for land or 3 for water.");
+       System.out.println("All services are within the nation");
+       transport[i]=Integer.parseInt(br.readLine());
+       System.out.println("Enter 1 for enlisting vehicle services and 2 for renting the vehicle");
+       service[i]=Integer.parseInt(br.readLine());
+       System.out.println("Enter the distance to be travelled in kilometers");
+       distance=Double.parseDouble(br.readLine());
+       if(service[i]==2)
+       {
+           System.out.println("Enter how long the vehicle will be needed for: in days");
+           time[i]=Integer.parseInt(br.readLine());
+       }
+       if(transport[i]==2)
+       {
+           System.out.println("Enter whichever vehicle is needed:");
+           veh=br.readLine();
+           veh=veh.trim();
+       }
+    }
+    public void billing()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       if(transport[i]==1)
+       {  
+          trans="Airways";
+          System.out.println("Enter the destination:");
+          destination[i]=br.readLine();
+          if(service[i]==1)
+          {
+              if(distance<=1500)
+              {
+                  base=passenger[i]*3500;
+                  bill[i]=base+base*18/100;
+                  System.out.println("Tickets to "+destination[i]+" have been booked.");//Telling the customer that booking is complete.
+              }
+              else if(distance>1500 && distance<=3000) 
+              {
+                  base=passenger[i]*6500;
+                  bill[i]=base+base*18/100;//Calculating the bill.
+                  System.out.println("Tickets to "+destination[i]+" have been booked.");
+              }
+              else
+              System.out.println("Air services beyond 3000km are not avaialable as India's width is 3000km.");
+          }
+          else
+          System.out.println("Aviation vehicles cannot be rented, sorry.");
+       }
+       if(transport[i]==2)
+       {  
+          trans="Landways";
+          if(service[i]==1)
+          {
+              int f=0;
+              for(int j=0;j<3;j++)
+              {  
+                  if(vehicle[j]==veh)
+                  {
+                      System.out.println(veh+" "+"is available.");
+                      f=1;
+                      if(veh.equalsIgnoreCase("Car"))
+                      {
+                          base=passenger[i]*2.5*distance;
+                          bill[i]=base+base*18/100;
+                      }
+                      if(veh.equalsIgnoreCase("Rickshaw"))//Checking if customer needs a rickshaw or not.
+                      {
+                          base=passenger[i]*1.5*distance;
+                          bill[i]=base+base*18/100;
+                      }
+                      if(veh.equalsIgnoreCase("Truck"))
+                      {
+                         base=45*distance;
+                         bill[i]=base+base*18/100;
+                      }
+                  }
+              }
+              if(f==0)
+              System.out.println(veh+" "+"is not available.");
+          }
+          if(service[i]==2)
+          {
+              int f=0;
+              for(int j=0;j<3;j++)
+              {  
+                  if(vehicle[j].equalsIgnoreCase(veh))
+                  {
+                      System.out.println(veh+" "+"is available for renting.");
+                      f=1;
+                      if(veh.equalsIgnoreCase("Car"))
+                      {
+                          base=time[i]*500;
+                          bill[i]=base+base*18/100;
+                      }
+                      if(veh.equalsIgnoreCase("Rickshaw"))
+                      {
+                          base=time[i]*200;
+                          bill[i]=base+base*18/100;
+                      }
+                      if(veh.equalsIgnoreCase("Truck"))
+                      {
+                         base=time[i]*300;
+                         bill[i]=base+base*18/100;
+                      }
+                  }
+              }
+              if(f==0)
+              System.out.println(veh+" "+"is not available for renting.");
+          }
+       }
+       if(transport[i]==3)
+       {
+          trans="Waterways";
+          if(service[i]==1)
+          {
+              System.out.println("Enter 1 for booking a ride on a ship and 2 for a ride on a yatch.");//Giving a choice to the customer.
+              int ww=Integer.parseInt(br.readLine());
+              if(ww==1)
+              {
+                  base=passenger[i]*5000;
+                  bill[i]=base+base*18/100;
+              }
+              if(ww==2)
+              {
+                  base=passenger[i]*200;
+                  bill[i]=base+base*18/100;
+              }
+          }
+          if(service[i]==2)
+          {
+              System.out.println("A yatch will be booked.");
+              base=time[i]*6000;
+              bill[i]=base+base*18/100;
+          }
+       }
+       System.out.println("Name of the customer:"+name[i]);
+       System.out.println("Address of the customer:"+address[i]);
+       System.out.println("Age of customer="+age[i]);
+       System.out.println("Mode of transport="+trans);
+       System.out.println("Distance travelled="+distance);
+       System.out.println("Mobile number of the customer="+mobno[i]);
+       System.out.println("Customer's order number:"+i);
+       System.out.println("Customer's bill:"+bill[i]);
+       i++;
+    }
+    public void cancellation()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       System.out.println("Enter customer number whose booking has to be cancelled:");
+       int num=Integer.parseInt(br.readLine());
+       int shot=100;
+       for(int z=num+1;z<shot;z++)//Using loop to delete order and shift other bookings one cell before.
+       {
+            name[z-1]=name[z];
+            address[z-1]=address[z];
+            gender[z-1]=gender[z];
+            occupation[z-1]=occupation[z];
+            age[z-1]=age[z];
+            passenger[z-1]=passenger[z];
+            mobno[z-1]=mobno[z];
+            time[z-1]=time[z];  
+            transport[z-1]=transport[z];
+            service[z-1]=service[z];
+            shot--;
+       }
+       System.out.println("Order has been cancelled. There will be no refunds.");
+    }
+    public void food()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       System.out.println("Enter 1 for premium vegetarian meal, 2 for basic non-vegetarian meal and 3 for premium non-vegetarian meal:");
+       int fd=Integer.parseInt(br.readLine());
+       int j=0;
+       if(fd==1)
+       {
+           food[j]="Premium vegetarian meal";
+           System.out.println(food[j]+" has been booked.");//Letting the customer know that their favourite meal has been booked.
+       }
+       if(fd==2)
+       {    
+           food[j]="Basic non-vegetarian meal";
+           System.out.println(food[j]+" has been booked.");
+       }
+       if(fd==3)
+       {
+           food[j]="Premium non-vegetarian meal";
+           System.out.println(food[j]+" has been booked.");
+       }
+       j++;
+    }
+    public void feedback()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       System.out.println("Please rate our services on a scale of 1 to 10.");//We improve on our services. Accepting customer feedback. 
+       double feedback=Double.parseDouble(br.readLine());
+       System.out.println("Please give any suggestions for us to impprove our services.");
+       String fdbk=br.readLine();
+    }
+    public void sorting()throws IOException
+    {
+       InputStreamReader isr= new InputStreamReader(System.in);
+       BufferedReader br=new BufferedReader (isr);
+       int q=1,ent=0,c=0;
+       while(q!=0)
+       {
+           System.out.println("Enter name of fellow passenger");
+           eachpass[ent]=br.readLine();
+           System.out.println("Enter age of fellow passenger");
+           eachpassage[ent]=Integer.parseInt(br.readLine());
+           System.out.println("Enter 0 to stop and 1 to continue:");
+           q=Integer.parseInt(br.readLine());
+           ent++;
+           c++;//Counting number of passengers.
+       }
+       for(int s=0;s<c-1;s++)
+       {
+           int u=0,t=0;
+           String t1="";
+           for(u=0;u<c-1-s;u++)
+           { 
+               if(eachpassage[u]>eachpassage[u+1])
+               {
+                   t=eachpassage[u];//Sorting array of ages of passengers.
+                   eachpassage[u]=eachpassage[u+1];
+                   eachpassage[u+1]=t;
+                   t1=eachpass[u];//Sorting array of names of passengers.
+                   eachpass[u]=eachpass[u+1];
+                   eachpass[u+1]=t1;
+               }
+           }
+       }
+       System.out.println("The list of passengers arranged in increasing order of ages is:");
+       for(int d=0;d<c;d++)
+       {
+          System.out.println("Name of Passenger \t\t Age of Passenger"); 
+          System.out.println(eachpass[d]+"\t\t\t"+eachpassage[d]);//Printing sorted array.
+       }
+    }
+}
